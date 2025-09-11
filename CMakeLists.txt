@@ -6,6 +6,9 @@ project(templ VERSION 1.0 LANGUAGES CXX)
 option(BUILD_SHARED "Build shared library" ON)
 option(BUILD_STATIC "Build static library" ON)
 
+# the c++17 standard is widely supported, thats why its the defaut here
+set(CMAKE_CXX_STANDARD 17)
+
 # paths
 set(INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
@@ -32,7 +35,6 @@ if(BUILD_SHARED)
 			"$<BUILD_INTERFACE:${INCLUDE_DIR}>"
 			"$<INSTALL_INTERFACE:include>"
 	)
-    target_compile_features(templ_shared PUBLIC cxx_std_17)
     add_library(templ::templ_shared ALIAS templ_shared)
 endif()
 
@@ -44,7 +46,6 @@ if(BUILD_STATIC)
 			"$<BUILD_INTERFACE:${INCLUDE_DIR}>"
 			"$<INSTALL_INTERFACE:include>"
 	)
-    target_compile_features(templ_static PUBLIC cxx_std_17)
     add_library(templ::templ_static ALIAS templ_static)
 endif()
 

@@ -5,8 +5,8 @@ LOCAL_INSTALL_DIR := lib
 .PHONY: build 
 
 build:
-	mkdir -p $(RELEASE_DIR) && cmake -B $(RELEASE_DIR) -DCMAKE_BUILD_TYPE=Release 
-	mkdir -p $(DEBUG_DIR) && cmake -B $(DEBUG_DIR) -DCMAKE_BUILD_TYPE=Debug
+	mkdir -p $(RELEASE_DIR) && cmake -B $(RELEASE_DIR)  -DCMAKE_BUILD_TYPE=Release && cd $(RELEASE_DIR) && make
+	mkdir -p $(DEBUG_DIR) && cmake -B $(DEBUG_DIR) -DCMAKE_BUILD_TYPE=Debug && cd $(DEBUG_DIR) && make
 
 clean:
 	rm -rf $(RELEASE_DIR) $(DEBUG_DIR)
