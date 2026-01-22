@@ -12,6 +12,18 @@ set(CMAKE_CXX_STANDARD 17)
 # paths
 set(INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
+include(FetchContent)
+
+FetchContent_Declare(
+  googletest
+  GIT_REPOSITORY https://github.com/google/googletest.git
+  GIT_TAG v1.17.0
+)
+
+# For Windows: Prevent overriding the parent project's compiler/linker settings
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(googletest)
+
 # sources
 set(HEADER_FILES
         "${INCLUDE_DIR}/templ.h"
@@ -102,16 +114,20 @@ install(FILES
     DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/templ"
 )
 
-# setup CTest
-add_executable(templ_test "test/templ_test.cpp")
+# setup GoogleTest
+enable_testing()
+find_package(GTest)
+
+add_executable(tests "test/main.cpp" 
+	"test/templ_test.cpp"
+)
 
 if(BUILD_STATIC)
-    target_link_libraries(templ_test PRIVATE templ_static)
+    target_link_libraries(tests PRIVATE templ_static GTest::gtest_main)
 elseif(BUILD_SHARED)
-    target_link_libraries(templ_test PRIVATE templ_shared)
+    target_link_libraries(tests PRIVATE templ_shared GTest::gtest_main)
 endif()
+target_include_directories(tests PRIVATE "../lib/include")
 
-target_include_directories(templ_test PRIVATE "../lib/include")
-
-enable_testing()
-add_test(NAME templ_test COMMAND templ_test)
+include(GoogleTest)
+gtest_discover_tests(tests)

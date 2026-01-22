@@ -1,11 +1,7 @@
+#include <gtest/gtest.h>
 #include <templ.h>
 
-int main() {
+TEST(templ_class, add) {
   templ_class obj;
-
-  if (obj.add(1, 2) == 3) {
-    return 0;
-  } else {
-    return 1;
-  }
+  EXPECT_TRUE(obj.add(1, 2) == 3);
 }
